@@ -1,12 +1,13 @@
 import React, { Component} from 'react';
 import Suggestions from './Suggestions';
 import './Search.css'
-
+import axios from 'axios';
 
 class Search extends Component {
     counter = 1;
     state = {
         query: '',
+        isSearched: false,
         results: []
     }
 
@@ -14,20 +15,31 @@ class Search extends Component {
         {'id': 1, 'name': 'Amit'}
     ];
 
+    getInfo = (id) => {
+        axios.get('https://jsonplaceholder.typicode.com/comments/' + id)
+          .then(({ data }) => {
+            this.setState({
+              results: [data]
+            })
+          })
+      }
+    
     handleInputChange = (e) => {
         this.setState({
-            query: e.target.value
+            query: e.target.value,
+            isSearched: true
         }, () => {
-            if (this.state.query && this.state.query.length > 1) {
-                this.counter = this.counter + 1;
-                this.suggestions.push({
-                    id: this.counter,
-                    name: 'Amit' + this.counter
-                })
-                this.setState({
-                    results: this.suggestions
-                })
-            }
+            this.getInfo(this.state.query);
+            // if (this.state.query && this.state.query.length > 1) {
+            //     this.counter = this.counter + 1;
+            //     this.suggestions.push({
+            //         id: this.counter,
+            //         name: 'Amit' + this.counter
+            //     })
+            //     this.setState({
+            //         results: this.suggestions
+            //     })
+            // }
         })
     }
 
@@ -36,11 +48,11 @@ class Search extends Component {
             <form>
                 <input
                     className="Search"
-                    type="text"
+                    type="number"
                     placeholder="Search for..."
                     onChange={this.handleInputChange}
                     key="customSearchInput"/>
-                <Suggestions results={this.state.results} />
+                <Suggestions results={this.state.results} isSearched={this.state.isSearched} />
                 </form>
         )
     }
