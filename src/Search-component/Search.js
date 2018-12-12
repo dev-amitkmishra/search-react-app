@@ -30,16 +30,6 @@ class Search extends Component {
             isSearched: true
         }, () => {
             this.getInfo(this.state.query);
-            // if (this.state.query && this.state.query.length > 1) {
-            //     this.counter = this.counter + 1;
-            //     this.suggestions.push({
-            //         id: this.counter,
-            //         name: 'Amit' + this.counter
-            //     })
-            //     this.setState({
-            //         results: this.suggestions
-            //     })
-            // }
         })
     }
 
